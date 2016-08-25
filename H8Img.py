@@ -134,7 +134,8 @@ def checkProcess():
 def setStartup():
     key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
                               0, win32con.KEY_ALL_ACCESS)
-    win32api.RegSetValueEx(key, 'H8Img', 0, win32con.REG_SZ, os.path.abspath(__file__))
+    name = re.sub('\.py$', '.exe', os.path.abspath(__file__))
+    win32api.RegSetValueEx(key, 'H8Img', 0, win32con.REG_SZ, name)
     win32api.RegCloseKey(key)
 
 
