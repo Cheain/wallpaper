@@ -94,7 +94,7 @@ def drawDate(localDate, earth, imgPath):
 
 
 def getPath():
-    for disk in ('e:', 'd:', 'c:'):
+    for disk in ('E:', 'D:', 'C:'):
         if os.path.isdir(disk):
             imgPath = os.path.join(disk, os.path.sep, 'himawari8')
             if not os.path.isdir(imgPath):
@@ -102,7 +102,7 @@ def getPath():
             return imgPath
 
 
-def SetWallpaper(filename):
+def setWallpaper(filename):
     key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, 'Control Panel\Desktop', 0, win32con.KEY_ALL_ACCESS)
     current = win32api.RegQueryValueEx(key, 'Wallpaper')[0]
     if current != filename:
@@ -131,17 +131,25 @@ def checkProcess():
                 sys.exit(0)
 
 
+def setStartup():
+    key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
+                              0, win32con.KEY_ALL_ACCESS)
+    win32api.RegSetValueEx(key, 'H8Img', 0, win32con.REG_SZ, os.path.abspath(__file__))
+    win32api.RegCloseKey(key)
+
+
 def main():
     multiple = 8
     localDate, zeroDate = getDate()
     imgPath = getPath()
     earth = downloadImg(multiple, zeroDate)
     ImgName = drawDate(localDate, earth, imgPath)
-    SetWallpaper(ImgName)
+    setWallpaper(ImgName)
 
 
 if __name__ == '__main__':
     checkProcess()
+    setStartup()
     while True:
         try:
             a = time.time()

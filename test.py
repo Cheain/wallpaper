@@ -1,11 +1,10 @@
 import os
 import urllib.request
+import win32api
+import win32gui
 import zipfile
 
-import win32api
-
 import win32con
-import win32gui
 from PIL import ImageFile
 from retrying import retry
 
@@ -75,13 +74,22 @@ def pro():
                   int(p.Properties_('UserModeTime').Value) + int(p.Properties_('KernelModeTime').Value))
             break
 
+
 def SetWallpaper(filename):
     key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, 'Control Panel\Desktop', 0, win32con.KEY_ALL_ACCESS)
     print(key)
     current = win32api.RegQueryValueEx(key, 'Wallpaper')[0]
-    print(win32api.RegQueryValueEx(key, 'Wallpaper'),'\n',current)
+    print(win32api.RegQueryValueEx(key, 'Wallpaper'), '\n', current)
     if current != filename:
         win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, filename, 1 + 2)
     win32api.RegCloseKey(key)
 
-SetWallpaper('E:\himawari8\wallpaper\2016年08月25日21时10分00秒.jpg')
+
+def setStartup():
+    key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',
+                              0, win32con.KEY_ALL_ACCESS)
+    win32api.RegSetValueEx(key, 'H8Img', 0, win32con.REG_SZ, os.path.abspath(__file__))
+    win32api.RegCloseKey(key)
+
+
+setStartup()
