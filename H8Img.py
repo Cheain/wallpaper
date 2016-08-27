@@ -159,10 +159,11 @@ if __name__ == '__main__':
             gc.enable()
             b = time.time()
             print('{}s'.format(b - a))
+        except Exception as e:
+            print(e)
+        finally:
             gc.collect()
             c = time.time()
             print('{}s'.format(c - b))
-        except Exception as e:
-            print(e)
         print('Start waiting')
         time.sleep(300)
