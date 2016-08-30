@@ -91,5 +91,60 @@ def setStartup():
     win32api.RegSetValueEx(key, 'H8Img', 0, win32con.REG_SZ, os.path.abspath(__file__))
     win32api.RegCloseKey(key)
 
+from tkinter import *
+import tkinter.messagebox as messagebox
 
-setStartup()
+class Application(Frame):
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.pack()
+        self.createWidgets()
+
+    def createWidgets(self):
+        self.nameInput = Entry(self)
+        self.nameInput.pack()
+        self.alertButton = Button(self, text='Hello', command=self.hello)
+        self.alertButton.pack()
+
+    def hello(self):
+        name = self.nameInput.get() or 'world'
+        messagebox.showinfo('Message', 'Hello, %s' % name)
+
+def App():
+    app = Application()
+    # 设置窗口标题:
+    app.master.title('Hello World')
+    # 主消息循环:
+    app.mainloop()
+
+class MainWindow:
+    def __init__(self):
+        self.frame = Tk()
+
+        self.label_name = Label(self.frame,text = "name:")
+        self.label_age = Label(self.frame,text = "age:")
+        self.label_sex = Label(self.frame,text = "sex:")
+
+        self.text_name = Text(self.frame,height = "1",width = 30)
+        self.text_age = Text(self.frame,height = "1",width = 30)
+        self.text_sex = Text(self.frame,height = "1",width = 30)
+
+        self.label_name.grid(row = 0,column = 0)
+        self.label_age.grid(row = 1,column = 0)
+        self.label_sex.grid(row = 2,column = 0)
+
+        self.button_ok = Button(self.frame,text = "ok",width = 10)
+        self.button_cancel = Button(self.frame,text = "cancel",width = 10)
+
+        self.text_name.grid(row = 0,column = 1)
+        self.text_age.grid(row = 1,column = 1)
+        self.text_sex.grid(row = 2,column = 1)
+
+        self.button_ok.grid(row = 3,column = 0)
+        self.button_cancel.grid(row = 3,column = 1)
+
+        self.frame.mainloop()
+
+frame = MainWindow()
+
+import tkinter.ttk
